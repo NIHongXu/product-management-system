@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.fdzc.shop.dao.ProductMapper">
+
+    <sql id="Base_Column_List">
+        id,category_id,product_name,description,detail,
+        price,stock_count,create_time,update_time
+    </sql>
+
+    <insert id="insert" parameterType="edu.fdzc.shop.entity.Product">
+        insert into product
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != NULL">
+                id,
+            </if>
+            <if test="categoryId != NULL">
+                catgory_id,
+            </if>
+            <if test="productName != NULL">
+                product_name,
+            </if>
+            <if test="description != NULL">
+                description,
+            </if>
+            <if test="detail != NULL">
+                detail,
+            </if>
+            <if test="price != NULL">
+                price,
+            </if>
+            <if test="stockCount != NULL">
+                stock_count,
+            </if>
+            <if test="createTime != NULL">
+                create_time,
+            </if>
+            <if test="updateTime != NULL">
+                update_time,
+            </if>
+        </trim>
+
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != NULL">
+                #{id},
+            </if>
+            <if test="categoryId != NULL">
+                #{categoryId},
+            </if>
+            <if test="productName != NULL">
+                #{productName},
+            </if>
+            <if test="description != NULL">
+                #{description},
+            </if>
+            <if test="detail != NULL">
+                #{detail},
+            </if>
+            <if test="price != NULL">
+                #{price},
+            </if>
+            <if test="stockCount != NULL">
+                #{stockCount},
+            </if>
+            <if test="createTime != NULL">
+                #{createTime},
+            </if>
+            <if test="updateTime != NULL">
+                #{updateTime},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="filter" parameterType="edu.fdzc.shop.entity.Product" resultType="edu.fdzc.shop.entity.Product"> /* 仅有查询语句才有resultType语句 */
+      select
+        <include refid="Base_Column_List"/>  /** == select * from product **/
+      from product
+      <where>
+          <if test="productName != NULL and productName != ''">
+              and product_name like CONCAT('%', #{productName},'%',) /*只有字符串·才会这样表示*/
+          </if>
+          <if test="categoryId != NULL and categoryId != ''">
+              and category_id = #{categoryId}
+          </if>
+          <if test="description != NULL and description != ''">
+              and description like CONCAT('%', #{description},'%',) /*只有字符串·才会这样表示*/
+          </if>
+          <if test="detail != NULL and detail != ''">
+              and detail like CONCAT('%', #{detail},'%',) /*只有字符串·才会这样表示*/
+          </if>
+      </where>
+      order by update_time DESC
+    </select>
+
+    <select id="findById" parameterType="String" resultType="edu.fdzc.shop.entity.Product">
+      select
+         <include refid="Base_Column_List"></include>
+      from
+         product
+      where id = #{id}
+    </select>
+
+    <update id="update" parameterType="edu.fdzc.shop.entity.Product">
+        update product
+        <set>
+            <if test="categoryId != NULL">
+                category_id = #{categoryId},
+            </if>
+            <if test="productName != NULL">
+                product_name = #{productName},
+            </if>
+            <if test="description != NULL">
+                description = #{description},
+            </if>
+            <if test="detail != NULL">
+                detail = #{detail},
+            </if>
+            <if test="price != NULL">
+                price = #{price},
+            </if>
+            <if test="stockCount != NULL">
+                stock_count = #{stockCount},
+            </if>
+            <if test="createTime != NULL">
+                create_time = #{createTime},
+            </if>
+            <if test="updateTime != NULL">
+                update_time = #{updateTime},
+            </if>
+        </set>
+    </update>
+
+    <delete id="delete" parameterType="String">
+        delete from product
+        where id = #{id}
+    </delete>
+</mapper>
