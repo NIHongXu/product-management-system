@@ -29,7 +29,7 @@ public class ProductService {
     public boolean saveProduct(ProductDto productDto) {
         Product product = new Product();
         BeanUtils.copyProperties(productDto, product);
-        product.setProductName(UUID.randomUUID().toString());
+        // 移除UUID生成,简化保存流程
         return productMapper.insert(product) > 0;
     }
 
